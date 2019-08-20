@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
+﻿using System.Globalization;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
+using System.IO;
 
 namespace ConsoleApp1
 {
@@ -102,9 +100,17 @@ namespace ConsoleApp1
             char[] textoParaCriptografar = texto.ToCharArray();
             string textoCriptografado;
             textoCriptografado = Criptografa(textoParaCriptografar, codigo, opcao);
-            System.IO.File.WriteAllText(@caminhoTXT, $"Texto criptografado: " +
-                                                     $"{textoCriptografado} " +
-                                                     $"- Chave para descriptografar: {codigo}");
+            if (File.Exists(caminhoTXT))
+            {
+                File.Delete(caminhoTXT);
+            }
+            using (StreamWriter sr = File.AppendText(caminhoTXT))
+            {
+                sr.Write($"Texto criptografado: " +
+                         $"{textoCriptografado} " +
+                         $"- Chave para descriptografar: {codigo}");
+            }
+
             return textoCriptografado;
         }
 
